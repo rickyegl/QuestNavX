@@ -139,6 +139,10 @@ namespace QuestNav.Core
         /// </summary>
         [SerializeField]
         private UIManager uiManager;
+
+
+        
+        
         #endregion
         #endregion
 
