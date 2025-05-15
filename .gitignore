@@ -5,3 +5,5 @@ oculus-frc-streamer_*/
 *.apk
 *.zip
 unity/UpgradeLog.htm
+
+.idea/
