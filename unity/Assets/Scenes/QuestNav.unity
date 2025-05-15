@@ -2410,6 +2410,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 157429804}
   testSphere: {fileID: 874944256}
+  rightInteractor: {fileID: 1293132627}
+  floor: {fileID: 750560198}
 --- !u!1 &1197134867
 GameObject:
   m_ObjectHideFlags: 0
@@ -2456,6 +2458,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1197134867}
   m_CullTransparentMesh: 1
+--- !u!114 &1293132627 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8346358098100974874, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1567031733}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4733c5f009d26ad49b3685117b8d3eb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1318727722
 GameObject:
   m_ObjectHideFlags: 0
