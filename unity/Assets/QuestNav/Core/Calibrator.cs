@@ -7,9 +7,6 @@ public class Calibrator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     [SerializeField]
-    private OVRHand leftHand;
-
-    [SerializeField]
     private GameObject testSphere;
 
     [SerializeField]
@@ -17,9 +14,19 @@ public class Calibrator : MonoBehaviour
 
     [SerializeField]
     private PlaneSurface floor;
-    void Start()
-    {   
 
+    [SerializeField]
+    private GameObject indicatorDown;
+
+    [SerializeField]
+    private GameObject indicatorUp;
+    void Start()
+    {
+        //indicatorDown.SetActive(false);
+        //indicatorUp.SetActive(false);
+
+        
+        
     }
 
     // Update is called once per frame
@@ -32,6 +39,17 @@ public class Calibrator : MonoBehaviour
 
         testSphere.transform.position = rayPose;
 
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger))
+        {
+            indicatorDown.SetActive(true);
+            indicatorUp.SetActive(false);
+            indicatorDown.transform.position = rayPose;
+        }
+        else if (OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger))
+        {
+            indicatorUp.SetActive(true);
+            indicatorUp.transform.position = rayPose;
+        }
         
     }
 }

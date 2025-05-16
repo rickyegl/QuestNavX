@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "com.meta.xr.mrutilitykit": "71.0.0",
-    "com.meta.xr.sdk.all": "71.0.0",
-    "com.meta.xr.sdk.interaction": "72.0.0",
+    "com.meta.xr.mrutilitykit": "76.0.0",
+    "com.meta.xr.sdk.all": "76.0.0",
+    "com.meta.xr.sdk.interaction": "76.0.0",
     "com.meta.xr.sdk.interaction.ovr": "71.0.0",
     "com.unity.ai.navigation": "2.0.5",
     "com.unity.collab-proxy": "2.5.2",
