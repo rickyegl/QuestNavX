@@ -1,0 +1,48 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.0.29f1
+CRC: 773707770
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e73d990d7481ebdf8b44527607881323
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8ed81b296f435bff7379a355cd1d66d9
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: f670e629f1a11e4f5fcf5955ca1a7070
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/OculusHandWire.mat
+- Packages/com.meta.xr.sdk.core/Meshes/OculusTouchForQuestAndRiftS/Materials/OculusTouchForQuestAndRiftS_Material.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/ProceduralArcMaterial.mat
+- Packages/com.meta.xr.sdk.core/Meshes/MetaQuestTouchPlus/Materials/MetaQuestTouchPlusMATphong_left.mat
+- Packages/com.meta.xr.sdk.core/Meshes/MetaQuestTouchPro/Materials/MetaQuestProLeft_Material.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/DistanceReticle.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/OculusHandPinchMaterial.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/TeleportReticleMaterial.mat
+- Packages/com.meta.xr.sdk.core/Meshes/OculusTouchForRift/Materials/OculusTouchForRift_Material.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/TunnelingEffect.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/LocomotionIndicatorMaterial.mat
+- Packages/com.meta.xr.sdk.core/Meshes/MetaQuestTouchPro/Materials/batteryIndicator_mat.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/OculusControllerRayCursor.mat
+- Packages/com.meta.xr.sdk.core/Meshes/OculusTouchForQuest2/Materials/OculusTouchForQuest2_MAT.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/OculusHand.mat
+- Packages/com.meta.xr.sdk.core/Meshes/MetaQuestTouchPro/Materials/MetaQuestProRight_Material.mat
+- Packages/com.meta.xr.sdk.core/Meshes/MetaQuestTouchPlus/Materials/MetaQuestTouchPlusMATphong_right.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/OculusControllerRayMaterial.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/TransparentStandard.mat
+- Packages/com.unity.render-pipelines.universal/Runtime/Materials/Lit.mat
+- Packages/com.meta.xr.sdk.interaction/Runtime/Materials/Unlit Material.mat
+Dependencies:
+- J:/Users/Sky/Documents/FRC/QuestNav/unity/OVRAssetBundles/OVRMasterBundle/asset_png0
+- J:/Users/Sky/Documents/FRC/QuestNav/unity/OVRAssetBundles/OVRMasterBundle/asset_shader0
+- J:/Users/Sky/Documents/FRC/QuestNav/unity/OVRAssetBundles/OVRMasterBundle/asset_tga0

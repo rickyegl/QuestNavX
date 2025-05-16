@@ -1,0 +1,43 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.0.29f1
+CRC: 286758372
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2a7b66bbc2f4f0106674367cde28ed73
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: dd19e86493bdd24fd689f2c119da850c
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 51878417b17ccb3a9af3d40fe07a2eef
+HashAppended: 0
+ClassTypes:
+- Class: 114
+  Script: {fileID: 11500000, guid: c5af6ab9d1bd4a47970ad151090281f3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4cfe1df7ed391a24fbe2a2d275e81b06, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0534f93df926e394b8085ae306e6a114, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Oculus.Interaction
+  ClassName: Oculus.Interaction.PoseDetection.FingerFeatureStateThreshold
+- AssemblyName: Oculus.Interaction
+  ClassName: Oculus.Interaction.PoseDetection.FingerFeatureThresholds
+- AssemblyName: Oculus.Interaction
+  ClassName: Oculus.Interaction.PoseDetection.ShapeRecognizer/FingerFeatureConfig
+- AssemblyName: Oculus.Interaction
+  ClassName: Oculus.Interaction.PoseDetection.ShapeRecognizer/FingerFeatureConfigList
+Assets:
+- Packages/com.meta.xr.sdk.interaction/Runtime/DefaultSettings/Locomotion/LocomotionThumbFeatureStateThresholds.asset
+- Packages/com.meta.xr.sdk.interaction/Runtime/DefaultSettings/PoseDetection/DefaultThumbFeatureStateThresholds.asset
+- Packages/com.meta.xr.sdk.interaction/Runtime/DefaultSettings/Locomotion/LShape.asset
+- Packages/com.meta.xr.sdk.interaction/Runtime/DefaultSettings/Locomotion/RelaxedCurl.asset
+- Packages/com.meta.xr.sdk.interaction/Runtime/DefaultSettings/Locomotion/ExitMicroGesture.asset
+- Packages/com.meta.xr.sdk.interaction/Runtime/DefaultSettings/PoseDetection/DefaultFingerFeatureStateThresholds.asset
+- Packages/com.meta.xr.sdk.interaction/Runtime/DefaultSettings/Locomotion/LocomotionMiddleFeatureStateThresholds.asset
+- Packages/com.meta.xr.sdk.interaction/Runtime/DefaultSettings/Locomotion/LocomotionIndexFeatureStateThresholds.asset
+- Assets/QuestNav/UI/TeamNumberValidator.asset
+Dependencies: []

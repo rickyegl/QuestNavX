@@ -38,9 +38,9 @@ namespace QuestNav.UI
 
             enterCalibrationButton.onClick.AddListener(OnEnterCalibrationButtonClicked);
 
-            mainMenu.SetActive(true);
+            //mainMenu.SetActive(true);
 
-            
+
         }
 
         private void OnMainMenuButtonClicked()

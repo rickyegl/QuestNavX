@@ -1,0 +1,33 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.0.29f1
+CRC: 1278548115
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3cbd8057c211599e1e04c20c6f3bdebf
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 147058da82bee871bbce28e472030442
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: fcb98730fb49e0ce7a7ab73120ff2905
+HashAppended: 0
+ClassTypes:
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Packages/com.meta.xr.sdk.core/Meshes/OculusTouchForQuestAndRiftS/Animation/OculusTouchQuestAndRiftSLeftAnimation.controller
+- Packages/com.meta.xr.sdk.core/Meshes/MetaQuestTouchPlus/Animation/MetaQuestTouchPlusLeftAnimation.controller
+- Packages/com.meta.xr.sdk.core/Meshes/MetaQuestTouchPro/Animation/MetaQuestTouchProRightAnimation.controller
+- Packages/com.meta.xr.sdk.core/Meshes/OculusTouchForQuest2/Animation/OculusTouchQuest2LeftAnimation.controller
+- Packages/com.meta.xr.sdk.core/Meshes/OculusTouchForRift/Animation/OculusTouchRiftRightAnimation.controller
+- Packages/com.meta.xr.sdk.core/Meshes/OculusTouchForQuestAndRiftS/Animation/OculusTouchQuestAndRiftSRightAnimation.controller
+- Packages/com.meta.xr.sdk.core/Meshes/OculusTouchForQuest2/Animation/OculusTouchQuest2RightAnimation.controller
+- Packages/com.meta.xr.sdk.core/Meshes/MetaQuestTouchPro/Animation/MetaQuestTouchProLeftAnimation.controller
+- Packages/com.meta.xr.sdk.core/Meshes/MetaQuestTouchPlus/Animation/MetaQuestTouchPlusRightAnimation.controller
+- Packages/com.meta.xr.sdk.core/Meshes/OculusTouchForRift/Animation/OculusTouchRiftLeftAnimation.controller
+Dependencies:
+- J:/Users/Sky/Documents/FRC/QuestNav/unity/OVRAssetBundles/OVRMasterBundle/asset_fbx0

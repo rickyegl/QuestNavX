@@ -1,0 +1,39 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.0.29f1
+CRC: 1699716892
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 5c8784ddbd750cdce3760fb6ee98f946
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9f349c36d7a6532f767333f9299b3e74
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 3d148bb3c99dc3409270c47d63d49c25
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Packages/com.meta.xr.sdk.core/Textures/MetaQuestTouchPlus/MetaQuestTouchPlus_Normals.png
+- Packages/com.meta.xr.sdk.core/Textures/MetaQuestTouchPlus/MetaQuestTouchPlus_Metallic.png
+- Packages/com.meta.xr.sdk.core/Textures/MetaQuestTouchPlus/MetaQuestTouchPlus_Left_BaseColor_AO_AlphaRoughness.png
+- Packages/com.unity.inputsystem/InputSystem/Editor/Icons/InputSystemUIInputModule@64.png
+- Packages/com.meta.xr.sdk.core/Editor/BuildingBlocks/Icons/ovr_bb_icon.png
+- Packages/com.meta.xr.sdk.core/Textures/MetaQuestTouchPlus/MetaQuestTouchPlus_Right_BaseColor_AO_AlphaRoughness.png
+- Packages/com.meta.xr.sdk.core/Textures/MetaQuestTouchPro/controller_l_lo_Normal.png
+- Packages/com.meta.xr.sdk.interaction/Runtime/Textures/RainbowGradient.png
+- Assets/Images/Voltec.png
+- Packages/com.meta.xr.sdk.interaction/Runtime/Textures/Reticle-Circle.png
+- Packages/com.meta.xr.sdk.core/Textures/OculusTouchForRift/touchController_albedo.png
+- Packages/com.meta.xr.sdk.core/Textures/MetaQuestTouchPro/controller_r_lo_Normal.png
+- Packages/com.meta.xr.sdk.interaction/Runtime/Textures/fingers_glow_mask.png
+- Packages/com.meta.xr.sdk.core/Textures/MetaQuestTouchPro/controller_r_lo_BaseColor.png
+- Packages/com.meta.xr.sdk.core/Textures/MetaQuestTouchPro/controller_l_lo_BaseColor.png
+- Packages/com.meta.xr.sdk.core/Textures/MetaQuestTouchPro/batteryIndicatorTexture32.png
+- Packages/com.meta.xr.sdk.interaction/Runtime/Textures/Reticle-Dot.png
+Dependencies: []
