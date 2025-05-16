@@ -409,7 +409,7 @@ RectTransform:
   m_Father: {fileID: 750421057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.2}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1618,7 +1618,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -18, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &619050622
 MonoBehaviour:
@@ -2362,7 +2362,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 217839580}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.2
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3616,6 +3616,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2483171112401766338, guid: f54012181eacade4ea242c65f804720f, type: 3}
   m_PrefabInstance: {fileID: 1567031733}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1010175773 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8544625775886568000, guid: 8c109a9dbc6909347875901a9c4d2418, type: 3}
+  m_PrefabInstance: {fileID: 3457009001802978204}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1010175774 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5755415533161003579, guid: 8c109a9dbc6909347875901a9c4d2418, type: 3}
@@ -3760,7 +3765,7 @@ GameObject:
   - component: {fileID: 1077957339}
   - component: {fileID: 1077957340}
   m_Layer: 5
-  m_Name: Content
+  m_Name: Content Tag Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3804,7 +3809,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 31.4
+  m_Spacing: 4.18
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -3892,7 +3897,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4281479730
   m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -3905,15 +3910,15 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
+  m_fontSize: 18
   m_fontSizeBase: 14
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -4059,6 +4064,11 @@ MonoBehaviour:
   floor: {fileID: 750560198}
   indicatorDown: {fileID: 1227409107}
   indicatorUp: {fileID: 812632584}
+  layoutSelector: {fileID: 1734023988}
+  buttonsList: {fileID: 1077957337}
+  buttonPrefab: {fileID: 1010175773}
+  jsons:
+  - {fileID: 4900000, guid: a8e7fcab5d0ba01439eb4f393f454077, type: 3}
 --- !u!1 &1149738073
 GameObject:
   m_ObjectHideFlags: 0
@@ -5192,8 +5202,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -93.4, y: -0.9}
+  m_SizeDelta: {x: 345.2, y: 450.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1468535811
 MonoBehaviour:
@@ -6443,8 +6453,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2}
-  m_SizeDelta: {x: 0, y: 150}
+  m_AnchoredPosition: {x: -153.2, y: 32.45}
+  m_SizeDelta: {x: 0, y: 435.75}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1783861121
 MonoBehaviour:
@@ -7734,6 +7744,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1077957338}
     m_Modifications:
+    - target: {fileID: 2855406508913842678, guid: 8c109a9dbc6909347875901a9c4d2418, type: 3}
+      propertyPath: m_text
+      value: Apriltag 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2855406508913842678, guid: 8c109a9dbc6909347875901a9c4d2418, type: 3}
+      propertyPath: m_fontSize
+      value: 28.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2855406508913842678, guid: 8c109a9dbc6909347875901a9c4d2418, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5755415533161003579, guid: 8c109a9dbc6909347875901a9c4d2418, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
