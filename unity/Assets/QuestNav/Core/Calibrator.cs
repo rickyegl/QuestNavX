@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
+using Meta.XR.Editor.Tags;
 using Oculus.Interaction;
 using Oculus.Interaction.Surfaces;
 using TMPro;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.WSA;
 
 public class Calibrator : MonoBehaviour
 {
@@ -41,22 +37,24 @@ public class Calibrator : MonoBehaviour
     [SerializeField]
     private TextAsset[] jsons;
 
+
+
+    private FieldLayoutData activeFieldLayoutData;
+
     void Start()
     {
         layoutSelector.ClearOptions();
 
         for (int i = 0; i < jsons.Length; i++)
         {
-            //layoutSelector.options.Add(new TMP_Dropdown.OptionData(jsons[i].name));
+            layoutSelector.options.Add(new TMP_Dropdown.OptionData(jsons[i].name));
         }
 
         layoutSelector.onValueChanged.AddListener(updateTagSelection);
-        //updateTagSelection(0);
+        updateTagSelection(0);
 
         indicatorDown.SetActive(false);
         indicatorUp.SetActive(false);
-
-
 
     }
 
@@ -86,12 +84,19 @@ public class Calibrator : MonoBehaviour
 
     void updateTagSelection(int index)
     {
-        FieldLayoutData fieldLayoutData = JsonUtility.FromJson<FieldLayoutData>(jsons[index].text);
-        for (int i = 0; i < fieldLayoutData.tags.Count; i++)
+        foreach (Transform child in buttonsList.transform)
+            {
+                Destroy(child.gameObject);
+            }
+        activeFieldLayoutData = JsonUtility.FromJson<FieldLayoutData>(jsons[index].text);
+        print("Showing " + activeFieldLayoutData.tags.Count + " tags");
+        for (int i = 0; i < activeFieldLayoutData.tags.Count; i++)
         {
             GameObject button = Instantiate(buttonPrefab, buttonsList.transform);
-            button.GetComponentInChildren<TMP_Text>().text = "Apriltag " + fieldLayoutData.tags[i].ID.ToString();
-            button.GetComponent<Button>().onClick.AddListener(() => OnTagButtonClicked(fieldLayoutData.tags[i]));
+            button.SetActive(true);
+            button.GetComponentInChildren<TMP_Text>().text = "Apriltag " + activeFieldLayoutData.tags[i].ID.ToString();
+            TagData tagData = activeFieldLayoutData.tags[i];
+            button.GetComponentInChildren<Button>().onClick.AddListener(() => OnTagButtonClicked(tagData));
         }
     }
     
