@@ -74,19 +74,19 @@ namespace QuestNav.Core
         /// <summary>
         /// Reference to the VR camera transform
         /// </summary>
-        [SerializeField] 
+        [SerializeField]
         private Transform vrCamera;
 
         /// <summary>
         /// Reference to the VR camera root transform
         /// </summary>
-        [SerializeField] 
+        [SerializeField]
         private Transform vrCameraRoot;
 
         /// <summary>
         /// Reference to the reset position transform
         /// </summary>
-        [SerializeField] 
+        [SerializeField]
         private Transform resetTransform;
 
         /// <summary>
@@ -102,12 +102,12 @@ namespace QuestNav.Core
         /// Increments once every time tracking is lost after having it aquired
         /// </summary>
         private int trackingLostEvents;
-        
+
         ///<summary>
         /// Whether we have tracking
         /// </summary>
         private bool currentlyTracking = false;
-        
+
         ///<summary>
         /// Whether we had tracking
         /// </summary>
@@ -140,9 +140,12 @@ namespace QuestNav.Core
         [SerializeField]
         private UIManager uiManager;
 
+        [SerializeField]
+        private Transform fieldTransform;
 
-        
-        
+
+
+
         #endregion
         #endregion
 
@@ -154,16 +157,16 @@ namespace QuestNav.Core
         {
             // Set Oculus display frequency
             OVRPlugin.systemDisplayFrequency = QuestNavConstants.Display.DISPLAY_FREQUENCY;
-            
+
             // Initialize UI manager
             uiManager.Initialize(teamInput, ipAddressText, conStateText, teamUpdateButton, networkConnection);
-            
+
             // Initialize command processor
             commandProcessor.Initialize(networkConnection, vrCamera, vrCameraRoot, resetTransform);
-            
+
             // Initialize heartbeat manager
             heartbeatManager.Initialize(networkConnection);
-            
+
             // Start connection to robot
             networkConnection.ConnectToRobot();
         }
@@ -184,7 +187,7 @@ namespace QuestNav.Core
             {
                 delayCounter++;
             }
-            
+
             // Check for connection attempt timeout to prevent zombie state
             if (!networkConnection.IsConnected)
             {
@@ -201,22 +204,22 @@ namespace QuestNav.Core
             {
                 // Manage heartbeat to detect zombie connections
                 heartbeatManager.ManageHeartbeat();
-                
+
                 // Collect and publish current frame data
                 UpdateFrameData();
                 networkConnection.PublishFrameData(frameIndex, timeStamp, position, rotation, eulerAngles);
-                
+
                 // Collect and publish current device data
                 UpdateDeviceData();
                 networkConnection.PublishDeviceData(currentlyTracking, trackingLostEvents, batteryPercent);
-                
+
                 // Process robot commands
                 commandProcessor.ProcessCommands();
             }
-            
-            
+
+
             // Check for tracking loss
-            
+
         }
         #endregion
 
@@ -228,8 +231,9 @@ namespace QuestNav.Core
         {
             frameIndex = Time.frameCount;
             timeStamp = Time.time;
-            position = cameraRig.centerEyeAnchor.position;
-            rotation = cameraRig.centerEyeAnchor.rotation;
+            //position = cameraRig.centerEyeAnchor.position;
+            //rotation = cameraRig.centerEyeAnchor.rotation;
+            GetPoseRelativeTo(fieldTransform, cameraRig.centerEyeAnchor, out position, out rotation);
             eulerAngles = cameraRig.centerEyeAnchor.eulerAngles;
         }
         /// <summary>
@@ -257,5 +261,31 @@ namespace QuestNav.Core
             hadTracking = currentlyTracking;
         }
         #endregion
+
+        public static void GetPoseRelativeTo(Transform fieldTransform, Transform targetTransform, out Vector3 relativePosition, out Quaternion relativeRotation)
+        {
+            if (fieldTransform == null)
+            {
+                Debug.LogError("Field Transform is null. Cannot calculate relative pose.");
+                relativePosition = Vector3.zero;
+                relativeRotation = Quaternion.identity;
+                return;
+            }
+            if (targetTransform == null)
+            {
+                Debug.LogError("Target Transform is null. Cannot calculate relative pose.");
+                relativePosition = Vector3.zero;
+                relativeRotation = Quaternion.identity;
+                return;
+            }
+
+            // Relative Position
+            relativePosition = fieldTransform.InverseTransformPoint(targetTransform.position);
+
+            // Relative Rotation
+            // relativeRotation = Inverse(fieldRotation) * targetRotation
+            relativeRotation = Quaternion.Inverse(fieldTransform.rotation) * targetTransform.rotation;
+        }
+    
     }
 }

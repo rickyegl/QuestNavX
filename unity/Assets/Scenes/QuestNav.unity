@@ -1032,6 +1032,7 @@ MonoBehaviour:
   heartbeatManager: {fileID: 336173543}
   commandProcessor: {fileID: 336173542}
   uiManager: {fileID: 336173541}
+  fieldTransform: {fileID: 890444840}
 --- !u!114 &336173546
 MonoBehaviour:
   m_ObjectHideFlags: 0

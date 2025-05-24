@@ -249,30 +249,63 @@ public class Calibrator : MonoBehaviour
 
     void saveTagPosition()
     {
+
         Transform definiteTransform = new GameObject().transform;
         definiteTransform.position = (indicatorDown.transform.position + indicatorUp.transform.position) / 2f;
         definiteTransform.rotation = Quaternion.LookRotation(indicatorUp.transform.position - indicatorDown.transform.position, Vector3.up);
         definiteTransform.rotation = Quaternion.Euler(definiteTransform.rotation.eulerAngles.x, definiteTransform.rotation.eulerAngles.y + 90, 0f);
 
+        Vector3 tagWorldPosition = definiteTransform.position;
+        Quaternion tagWorldRotation = definiteTransform.rotation;
 
-        selectedTag.pose.translation.x = definiteTransform.position.x;
-        selectedTag.pose.translation.y = definiteTransform.position.y;
-        selectedTag.pose.translation.z = definiteTransform.position.z;
+        debugAprilTag.transform.position = tagWorldPosition;
+        debugAprilTag.transform.rotation = tagWorldRotation;
 
-        selectedTag.pose.rotation.quaternion.W = definiteTransform.rotation.w;
-        selectedTag.pose.rotation.quaternion.X = definiteTransform.rotation.x;
-        selectedTag.pose.rotation.quaternion.Y = definiteTransform.rotation.y;
-        selectedTag.pose.rotation.quaternion.Z = definiteTransform.rotation.z;
+        debugAprilTag.transform.position = new Vector3(debugAprilTag.transform.position.x, (float)selectedTag.pose.translation.z, debugAprilTag.transform.position.z);
 
-        debugAprilTag.transform.position = definiteTransform.position;
-        debugAprilTag.transform.rotation = definiteTransform.rotation;
+        Vector3 tagPositionInFieldCoords = new Vector3(
+            (float)selectedTag.pose.translation.x,
+            (float)selectedTag.pose.translation.z, // Field Y is from selectedTag's Z component
+            (float)selectedTag.pose.translation.y  // Field Z is from selectedTag's Y component
+        );
 
-        Transform convertedTransform = new GameObject().transform;
-        convertedTransform.position = new Vector3((float)(definiteTransform.position.x - selectedTag.pose.translation.x), 0f, (float)(definiteTransform.position.z - selectedTag.pose.translation.y));
-        convertedTransform.rotation = new Quaternion((float)(definiteTransform.rotation.x - selectedTag.pose.rotation.quaternion.X), (float)(definiteTransform.rotation.y - selectedTag.pose.rotation.quaternion.Z), (float)(definiteTransform.rotation.z - selectedTag.pose.rotation.quaternion.Y), (float)(definiteTransform.rotation.w - selectedTag.pose.rotation.quaternion.W));
+        Quaternion tagRotationInFieldCoords = new Quaternion(
+            (float)selectedTag.pose.rotation.quaternion.X,
+            (float)selectedTag.pose.rotation.quaternion.Z,
+            (float)selectedTag.pose.rotation.quaternion.Y,
+            (float)selectedTag.pose.rotation.quaternion.W
+        );
 
-        fieldObject.transform.position = convertedTransform.position;
-        fieldObject.transform.rotation = convertedTransform.rotation;
+        //Calculate the Field's origin pose in World coordinates (W_T_field)
+        // W_T_field = W_T_tag * Inverse(F_T_tag)
+
+        // Inverse of F_T_tag:
+        // Inverse rotation:
+        Quaternion inv_tagRotationInFieldCoords = Quaternion.Inverse(tagRotationInFieldCoords);
+        // Inverse translation (must be rotated by the inverse rotation):
+        Vector3 inv_tagPositionInFieldCoords = inv_tagRotationInFieldCoords * (-tagPositionInFieldCoords);
+
+        // Now combine: W_T_field = W_T_tag * (Tag_T_field)
+        // where Tag_T_field is Inverse(F_T_tag)
+
+        // Rotation of Field in World:
+        // R_world_field = R_world_tag * R_tag_field (where R_tag_field is inv_tagRotationInFieldCoords)
+        Quaternion fieldOriginWorldRotation = tagWorldRotation * inv_tagRotationInFieldCoords;
+
+        // Position of Field in World:
+        // P_world_field = P_world_tag + R_world_tag * P_tag_field (where P_tag_field is inv_tagPositionInFieldCoords)
+        Vector3 fieldOriginWorldPosition = tagWorldPosition + (tagWorldRotation * inv_tagPositionInFieldCoords);
+
+        // Alternative calculation (often more intuitive for matrix math people):
+        // fieldOriginWorldRotation = tagWorldRotation * Quaternion.Inverse(tagRotationInFieldCoords);
+        // fieldOriginWorldPosition = tagWorldPosition - (fieldOriginWorldRotation * tagPositionInFieldCoords);
+
+
+        //Apply to the fieldObject
+        fieldObject.transform.position = fieldOriginWorldPosition;
+        fieldObject.transform.rotation = fieldOriginWorldRotation;
+        
+        
 
     }
 
