@@ -1923,7 +1923,7 @@ GameObject:
   - component: {fileID: 561439323}
   - component: {fileID: 561439322}
   m_Layer: 0
-  m_Name: Calibration Button
+  m_Name: No Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4892,7 +4892,7 @@ GameObject:
   - component: {fileID: 1143518157}
   - component: {fileID: 1143518156}
   m_Layer: 0
-  m_Name: Calibration Button
+  m_Name: Yes Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6824,6 +6824,7 @@ MonoBehaviour:
   yesButton: {fileID: 72475490}
   noButton: {fileID: 1056496366}
   timerText: {fileID: 2070682176}
+  cameraRig: {fileID: 1567031737}
 --- !u!1 &1537958518
 GameObject:
   m_ObjectHideFlags: 0
@@ -8320,7 +8321,7 @@ GameObject:
   - component: {fileID: 1795808722}
   - component: {fileID: 1795808721}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Yes Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

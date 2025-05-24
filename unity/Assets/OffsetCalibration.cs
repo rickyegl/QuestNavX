@@ -18,6 +18,11 @@ public class OffsetCalibration : MonoBehaviour
     private GameObject timerText;
     private float timer = 5.0f;
 
+    [SerializeField]
+    private OVRCameraRig cameraRig;
+
+    private Transform trackerTransform;
+
     private CalibrationState state = CalibrationState.Idle;
     enum CalibrationState
     {
@@ -35,6 +40,7 @@ public class OffsetCalibration : MonoBehaviour
         startCalibrationButton.GetComponent<Button>().onClick.AddListener(StartCalibration);
         yesButton.GetComponentInChildren<Button>().onClick.AddListener(ConfirmCalibration);
         noButton.GetComponentInChildren<Button>().onClick.AddListener(DenyCalibration);
+        trackerTransform = cameraRig.centerEyeAnchor;
     }
 
     // Update is called once per frame
