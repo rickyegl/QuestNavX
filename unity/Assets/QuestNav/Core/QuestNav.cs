@@ -143,6 +143,9 @@ namespace QuestNav.Core
         [SerializeField]
         private Transform fieldTransform;
 
+        [SerializeField]
+        private Transform centerEyeTransform;
+
 
 
 
@@ -234,7 +237,8 @@ namespace QuestNav.Core
             //position = cameraRig.centerEyeAnchor.position;
             //rotation = cameraRig.centerEyeAnchor.rotation;
             GetPoseRelativeTo(fieldTransform, cameraRig.centerEyeAnchor, out position, out rotation);
-            eulerAngles = cameraRig.centerEyeAnchor.eulerAngles;
+            //eulerAngles = cameraRig.centerEyeAnchor.eulerAngles;
+            eulerAngles = rotation.eulerAngles;
         }
         /// <summary>
         /// Updates the current device data from the VR headset

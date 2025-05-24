@@ -250,60 +250,75 @@ public class Calibrator : MonoBehaviour
     void saveTagPosition()
     {
 
-        Transform definiteTransform = new GameObject().transform;
-        definiteTransform.position = (indicatorDown.transform.position + indicatorUp.transform.position) / 2f;
-        definiteTransform.rotation = Quaternion.LookRotation(indicatorUp.transform.position - indicatorDown.transform.position, Vector3.up);
-        definiteTransform.rotation = Quaternion.Euler(definiteTransform.rotation.eulerAngles.x, definiteTransform.rotation.eulerAngles.y + 90, 0f);
+        // 1. Determine the measured world pose of the AprilTag
+    Transform definiteTransform = new GameObject().transform; // Temporary for calculation
+    definiteTransform.position = (indicatorDown.transform.position + indicatorUp.transform.position) / 2f;
 
-        Vector3 tagWorldPosition = definiteTransform.position;
-        Quaternion tagWorldRotation = definiteTransform.rotation;
+    // This orients definiteTransform's local Z along (indicatorUp - indicatorDown)
+    // and its local Y along world up.
+    definiteTransform.rotation = Quaternion.LookRotation(indicatorUp.transform.position - indicatorDown.transform.position, Vector3.up);
 
-        debugAprilTag.transform.position = tagWorldPosition;
-        debugAprilTag.transform.rotation = tagWorldRotation;
+    // This +90 degree rotation implies that the (indicatorUp - indicatorDown) direction
+    // corresponds to the tag's local X-axis (or -X), and you're rotating it
+    // so that the tag's conceptual "forward" (what JSON considers Z-forward) aligns.
+    // Ensure this correctly reflects your tag's physical orientation vs. JSON definition.
+    definiteTransform.rotation = Quaternion.Euler(definiteTransform.rotation.eulerAngles.x, definiteTransform.rotation.eulerAngles.y + 0, 0f);
 
-        debugAprilTag.transform.position = new Vector3(debugAprilTag.transform.position.x, (float)selectedTag.pose.translation.z, debugAprilTag.transform.position.z);
+    // These are the *actual measured* world coordinates of the tag
+    Vector3 tagWorldPosition = definiteTransform.position;
+    Quaternion tagWorldRotation = definiteTransform.rotation;
 
-        Vector3 tagPositionInFieldCoords = new Vector3(
-            (float)selectedTag.pose.translation.x,
-            (float)selectedTag.pose.translation.z, // Field Y is from selectedTag's Z component
-            (float)selectedTag.pose.translation.y  // Field Z is from selectedTag's Y component
-        );
+    Destroy(definiteTransform.gameObject); // Clean up the temporary GameObject
 
-        Quaternion tagRotationInFieldCoords = new Quaternion(
-            (float)selectedTag.pose.rotation.quaternion.X,
-            (float)selectedTag.pose.rotation.quaternion.Z,
-            (float)selectedTag.pose.rotation.quaternion.Y,
-            (float)selectedTag.pose.rotation.quaternion.W
-        );
+    // 2. Update the debug visualizer (optional, but good for verification)
+    debugAprilTag.transform.position = tagWorldPosition;
+    debugAprilTag.transform.rotation = tagWorldRotation * Quaternion.Euler(0, 0, 90);
 
-        //Calculate the Field's origin pose in World coordinates (W_T_field)
-        // W_T_field = W_T_tag * Inverse(F_T_tag)
-
-        // Inverse of F_T_tag:
-        // Inverse rotation:
-        Quaternion inv_tagRotationInFieldCoords = Quaternion.Inverse(tagRotationInFieldCoords);
-        // Inverse translation (must be rotated by the inverse rotation):
-        Vector3 inv_tagPositionInFieldCoords = inv_tagRotationInFieldCoords * (-tagPositionInFieldCoords);
-
-        // Now combine: W_T_field = W_T_tag * (Tag_T_field)
-        // where Tag_T_field is Inverse(F_T_tag)
-
-        // Rotation of Field in World:
-        // R_world_field = R_world_tag * R_tag_field (where R_tag_field is inv_tagRotationInFieldCoords)
-        Quaternion fieldOriginWorldRotation = tagWorldRotation * inv_tagRotationInFieldCoords;
-
-        // Position of Field in World:
-        // P_world_field = P_world_tag + R_world_tag * P_tag_field (where P_tag_field is inv_tagPositionInFieldCoords)
-        Vector3 fieldOriginWorldPosition = tagWorldPosition + (tagWorldRotation * inv_tagPositionInFieldCoords);
-
-        // Alternative calculation (often more intuitive for matrix math people):
-        // fieldOriginWorldRotation = tagWorldRotation * Quaternion.Inverse(tagRotationInFieldCoords);
-        // fieldOriginWorldPosition = tagWorldPosition - (fieldOriginWorldRotation * tagPositionInFieldCoords);
+    // DO NOT DO THIS - IT USES JSON Z AS WORLD Y, WHICH IS WRONG HERE.
+    // debugAprilTag.transform.position = new Vector3(debugAprilTag.transform.position.x, (float)selectedTag.pose.translation.z, debugAprilTag.transform.position.z);
 
 
-        //Apply to the fieldObject
-        fieldObject.transform.position = fieldOriginWorldPosition;
-        fieldObject.transform.rotation = fieldOriginWorldRotation;
+    // 3. Get the tag's pose in Field Coordinates (from JSON, converted to Unity's system)
+    // JSON X -> Unity X
+    // JSON Z (elevation in JSON) -> Unity Y
+    // JSON Y (depth/forward in JSON's XY plane) -> Unity Z
+    Vector3 tagPositionInFieldCoords = new Vector3(
+        (float)selectedTag.pose.translation.x,
+        (float)selectedTag.pose.translation.z,
+        (float)selectedTag.pose.translation.y
+    );
+
+    // Convert JSON quaternion to Unity's coordinate system (Y-up) and negate yaw.
+    // JSON X,Y,Z,W -> Unity Quaternion (X_json, Z_json, Y_json, W_json) to account for axis remapping
+    Quaternion initialJsonOrientationInUnityAxes = new Quaternion(
+        (float)selectedTag.pose.rotation.quaternion.X,
+        (float)selectedTag.pose.rotation.quaternion.Z, // JSON Z-axis (up for JSON) part maps to Unity Y-axis
+        (float)selectedTag.pose.rotation.quaternion.Y, // JSON Y-axis (forward for JSON) part maps to Unity Z-axis
+        (float)selectedTag.pose.rotation.quaternion.W
+    );
+
+    Vector3 eulerAngles = initialJsonOrientationInUnityAxes.eulerAngles;
+    eulerAngles.y = -eulerAngles.y; // Negate yaw
+    Quaternion tagRotationInFieldCoords = Quaternion.Euler(eulerAngles);
+
+
+    // 4. Calculate the Field's origin pose in World coordinates (W_T_field)
+    // W_T_field = W_T_tag * Inverse(F_T_tag)
+    // Inverse(F_T_tag) transforms from Field's origin to Tag's origin, expressed in Tag's local frame.
+    // More direct: FieldOrigin_World = Tag_WorldPose * Tag_Pose_In_Field_Inverse
+
+    // Rotation of Field in World: R_world_field = R_world_tag * R_tag_field_inverse
+    // R_tag_field_inverse = Quaternion.Inverse(tagRotationInFieldCoords)
+    Quaternion fieldOriginWorldRotation = tagWorldRotation * Quaternion.Inverse(tagRotationInFieldCoords);
+
+    // Position of Field in World: P_world_field = P_world_tag - (R_world_field * P_field_tag)
+    // P_field_tag is tagPositionInFieldCoords (vector from field origin to tag, in field coords)
+    Vector3 fieldOriginWorldPosition = tagWorldPosition - (fieldOriginWorldRotation * tagPositionInFieldCoords);
+
+
+    // 5. Apply to the fieldObject
+    fieldObject.transform.position = fieldOriginWorldPosition;
+    fieldObject.transform.rotation = fieldOriginWorldRotation;
         
         
 

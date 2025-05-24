@@ -327,6 +327,7 @@ namespace QuestNav.Network
                 generateIP(),
                 "172.22.11.2",
                 "127.0.0.1",
+                "192.168.1.5",
                 $"roboRIO-{teamNumber}-FRC.local",
                 $"roboRIO-{teamNumber}-FRC.lan",
                 $"roboRIO-{teamNumber}-FRC.frc-field.local"
