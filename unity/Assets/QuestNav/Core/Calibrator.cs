@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Oculus.Interaction;
 using Oculus.Interaction.Surfaces;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class Calibrator : MonoBehaviour
@@ -61,6 +63,9 @@ public class Calibrator : MonoBehaviour
 
     [SerializeField]
     private GameObject fieldObject;
+
+    [SerializeField]
+    private GameObject anchorsLocation;
 
     void Start()
     {
@@ -224,14 +229,14 @@ public class Calibrator : MonoBehaviour
     private List<OVRSpatialAnchor> _anchorInstances = new List<OVRSpatialAnchor>();
     private List<Guid> _anchorUuids = new List<Guid>();
 
-    private async void SetupAnchorAsync(OVRSpatialAnchor anchor, bool saveAnchor)
+    private async Task<Guid> SetupAnchorAsync(OVRSpatialAnchor anchor, bool saveAnchor)
     {
         // Keep checking for a valid and localized anchor state
         if (!await anchor.WhenLocalizedAsync())
         {
             Debug.LogError($"Unable to create anchor.");
             Destroy(anchor.gameObject);
-            return;
+            throw new InvalidOperationException("Anchor could not be localized.");
         }
 
         // Add the anchor to the list of all instances
@@ -242,6 +247,42 @@ public class Calibrator : MonoBehaviour
         {
             // Remember UUID so you can load the anchor later
             _anchorUuids.Add(anchor.Uuid);
+            return anchor.Uuid;
+        }
+        throw new InvalidOperationException("Anchor could not be saved.");
+    }
+
+    public async void LoadAllAnchors()
+    {
+        // Load and localize
+        var unboundAnchors = new List<OVRSpatialAnchor.UnboundAnchor>();
+        _anchorUuids = new List<Guid>();
+        activeField.tags.ForEach(tag =>
+        {
+            if (tag.anchorUuid != Guid.Empty)
+            {
+                _anchorUuids.Add(tag.anchorUuid);
+                GameObject newTag = Instantiate(debugAprilTag);
+                newTag.AddComponent<OVRSpatialAnchor>();
+                //unboundAnchors.Add(newTag.GetComponent<OVRSpatialAnchor>());dsadsadasdsa
+            }
+            else
+            {
+                Debug.LogWarning($"Tag {tag.ID} does not have a valid anchor UUID.");
+            }
+        });
+        var result = await OVRSpatialAnchor.LoadUnboundAnchorsAsync(_anchorUuids, unboundAnchors);
+
+        if (result.Success)
+        {
+            foreach (var anchor in unboundAnchors)
+            {
+                await anchor.LocalizeAsync();//.ContinueWith(_onLocalized, anchor);
+            }
+        }
+        else
+        {
+            Debug.LogError($"Load anchors failed with {result.Status}.");
         }
     }
 
@@ -275,7 +316,7 @@ public class Calibrator : MonoBehaviour
 
     }
 
-    void saveTagPosition()
+    async void saveTagPosition()
     {
 
         // 1. Determine the measured world pose of the AprilTag
@@ -299,8 +340,7 @@ public class Calibrator : MonoBehaviour
         Destroy(definiteTransform.gameObject); // Clean up the temporary GameObject
 
         // 2. Update the debug visualizer (optional, but good for verification)
-        debugAprilTag.transform.position = tagWorldPosition;
-        debugAprilTag.transform.rotation = tagWorldRotation * Quaternion.Euler(0, 0, 90);
+
 
         // DO NOT DO THIS - IT USES JSON Z AS WORLD Y, WHICH IS WRONG HERE.
         // debugAprilTag.transform.position = new Vector3(debugAprilTag.transform.position.x, (float)selectedTag.pose.translation.z, debugAprilTag.transform.position.z);
@@ -316,12 +356,23 @@ public class Calibrator : MonoBehaviour
             (float)selectedTag.pose.translation.y
         );
 
+        definiteTransform.transform.position = new Vector3(debugAprilTag.transform.position.x, tagPositionInFieldCoords.y, debugAprilTag.transform.position.z);
+        debugAprilTag.transform.position = tagWorldPosition;
+        debugAprilTag.transform.rotation = tagWorldRotation * Quaternion.Euler(0, 0, 0);
+
+        GameObject anchorObject = Instantiate(debugAprilTag);
+        anchorObject.transform.parent = anchorsLocation.transform;
+        OVRSpatialAnchor anchor = anchorObject.GetComponent<OVRSpatialAnchor>();
+        anchor.enabled = true;
+        Guid guid = await SetupAnchorAsync(new GameObject("TagAnchor").AddComponent<OVRSpatialAnchor>(), true);
+        Debug.Log("Created anchor with UUID: " + guid);
+
         // Convert JSON quaternion to Unity's coordinate system (Y-up) and negate yaw.
         // JSON X,Y,Z,W -> Unity Quaternion (X_json, Z_json, Y_json, W_json) to account for axis remapping
         Quaternion initialJsonOrientationInUnityAxes = new Quaternion(
             (float)selectedTag.pose.rotation.quaternion.X,
             (float)selectedTag.pose.rotation.quaternion.Z, // JSON Z-axis (up for JSON) part maps to Unity Y-axis
-            (float)selectedTag.pose.rotation.quaternion.Y, // JSON Y-axis (forward for JSON) part maps to Unity Z-axis
+            (float)selectedTag.pose.rotation.quaternion.Y, // JSON Y-axis (f orward for JSON) part maps to Unity Z-axis
             (float)selectedTag.pose.rotation.quaternion.W
         );
 
@@ -347,6 +398,35 @@ public class Calibrator : MonoBehaviour
         // 5. Apply to the fieldObject
         fieldObject.transform.position = fieldOriginWorldPosition;
         fieldObject.transform.rotation = fieldOriginWorldRotation;
+
+        if (activeField.tags.Find(t => t.ID == selectedTag.ID) != null)
+        {
+            activeField.tags.Remove(activeField.tags.Find(t => t.ID == selectedTag.ID));
+        }
+        activeField.tags.Add(new TagData
+        {
+            ID = selectedTag.ID,
+            anchorUuid = guid,
+            pose = new PoseData
+            {
+                translation = new TranslationData
+                {
+                    x = fieldOriginWorldPosition.x,
+                    y = fieldOriginWorldPosition.y,
+                    z = fieldOriginWorldPosition.z
+                },
+                rotation = new RotationData
+                {
+                    quaternion = new QuaternionData
+                    {
+                        W = fieldOriginWorldRotation.w,
+                        X = fieldOriginWorldRotation.x,
+                        Y = fieldOriginWorldRotation.y,
+                        Z = fieldOriginWorldRotation.z
+                    }
+                }
+            }
+        });
 
 
 
@@ -396,6 +476,7 @@ public class TagData
 {
     public int ID;
     public PoseData pose;
+    public Guid anchorUuid;
 }
 
 [System.Serializable]
