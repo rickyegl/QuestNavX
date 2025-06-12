@@ -1910,6 +1910,37 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!1 &555953447
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 555953448}
+  m_Layer: 0
+  m_Name: Anchors
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &555953448
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555953447}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &561439320
 GameObject:
   m_ObjectHideFlags: 0
@@ -4528,6 +4559,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!1 &1080553877
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1080553878}
+  m_Layer: 0
+  m_Name: AnchorAprilTag
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1080553878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080553877}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.2066774, y: 1.8863808, z: -0.05304886}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1686931466}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1096335408
 GameObject:
   m_ObjectHideFlags: 0
@@ -5109,7 +5172,7 @@ MonoBehaviour:
   createFieldButton: {fileID: 1105614123}
   fieldNameText: {fileID: 2017166258}
   fieldSelector: {fileID: 818066873}
-  debugAprilTag: {fileID: 1686931462}
+  debugAprilTag: {fileID: 1080553877}
   fieldObject: {fileID: 890444839}
 --- !u!1 &1170775087
 GameObject:
@@ -6967,6 +7030,7 @@ MonoBehaviour:
   preSpinCountdown: 5
   spinDuration: 10
   minSamplesForCalibration: 50
+  estimatedSamplesCapacity: 1200
 --- !u!1 &1537958518
 GameObject:
   m_ObjectHideFlags: 0
@@ -8024,7 +8088,7 @@ GameObject:
   - component: {fileID: 1686931464}
   - component: {fileID: 1686931463}
   m_Layer: 0
-  m_Name: DebugApriltag
+  m_Name: DebugTag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8112,13 +8176,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686931462}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.26, y: 1.54, z: 0.38}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.165, y: 0.165, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1597130746}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1080553878}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1689005916
 GameObject:
@@ -10420,6 +10484,7 @@ SceneRoots:
   - {fileID: 862893326}
   - {fileID: 1143725489}
   - {fileID: 3135808}
-  - {fileID: 1686931466}
   - {fileID: 890444840}
   - {fileID: 1012731451}
+  - {fileID: 1080553878}
+  - {fileID: 555953448}
