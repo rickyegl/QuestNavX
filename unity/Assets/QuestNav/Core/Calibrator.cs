@@ -256,6 +256,7 @@ public class Calibrator : MonoBehaviour
     {
         // Load and localize
         var unboundAnchors = new List<OVRSpatialAnchor.UnboundAnchor>();
+        
         _anchorUuids = new List<Guid>();
         activeField.tags.ForEach(tag =>
         {
@@ -272,17 +273,39 @@ public class Calibrator : MonoBehaviour
             }
         });
         var result = await OVRSpatialAnchor.LoadUnboundAnchorsAsync(_anchorUuids, unboundAnchors);
+        _anchorUuids.ForEach(uuid =>
+        {
+            Debug.Log($"Loading anchor with UUID: {uuid}");
+        });
 
         if (result.Success)
         {
             foreach (var anchor in unboundAnchors)
             {
-                await anchor.LocalizeAsync();//.ContinueWith(_onLocalized, anchor);
+                //anchor.LocalizeAsync().ContinueWith(OnLocalized, anchor);
             }
         }
         else
         {
             Debug.LogError($"Load anchors failed with {result.Status}.");
+        }
+    }
+
+    private void OnLocalized(bool success, OVRSpatialAnchor.UnboundAnchor unboundAnchor)
+    {
+        if (!success) return;
+
+        if (unboundAnchor.TryGetPose(out Pose pose))
+        {
+
+            //unboundAnchor.BindTo(spatialAnchor);
+            //Debug.Log("Localized anchor with UUID: " + spatialAnchor.Uuid + " and name: " + name);
+
+            //SpatialAnchorManager.instance.anchors.Add(spatialAnchor);
+        }
+        else
+        {
+            Debug.LogError("Failed to get pose for unbound anchor with UUID: " + unboundAnchor.Uuid);
         }
     }
 
@@ -358,10 +381,11 @@ public class Calibrator : MonoBehaviour
 
         definiteTransform.transform.position = new Vector3(debugAprilTag.transform.position.x, tagPositionInFieldCoords.y, debugAprilTag.transform.position.z);
         debugAprilTag.transform.position = tagWorldPosition;
-        debugAprilTag.transform.rotation = tagWorldRotation * Quaternion.Euler(0, 0, 0);
+        debugAprilTag.transform.rotation = tagWorldRotation;
 
         GameObject anchorObject = Instantiate(debugAprilTag);
         anchorObject.transform.parent = anchorsLocation.transform;
+        anchorObject.AddComponent<OVRSpatialAnchor>();
         OVRSpatialAnchor anchor = anchorObject.GetComponent<OVRSpatialAnchor>();
         anchor.enabled = true;
         Guid guid = await SetupAnchorAsync(new GameObject("TagAnchor").AddComponent<OVRSpatialAnchor>(), true);
@@ -381,17 +405,10 @@ public class Calibrator : MonoBehaviour
         Quaternion tagRotationInFieldCoords = Quaternion.Euler(eulerAngles);
 
 
-        // 4. Calculate the Field's origin pose in World coordinates (W_T_field)
-        // W_T_field = W_T_tag * Inverse(F_T_tag)
-        // Inverse(F_T_tag) transforms from Field's origin to Tag's origin, expressed in Tag's local frame.
-        // More direct: FieldOrigin_World = Tag_WorldPose * Tag_Pose_In_Field_Inverse
 
-        // Rotation of Field in World: R_world_field = R_world_tag * R_tag_field_inverse
-        // R_tag_field_inverse = Quaternion.Inverse(tagRotationInFieldCoords)
         Quaternion fieldOriginWorldRotation = tagWorldRotation * Quaternion.Inverse(tagRotationInFieldCoords);
 
-        // Position of Field in World: P_world_field = P_world_tag - (R_world_field * P_field_tag)
-        // P_field_tag is tagPositionInFieldCoords (vector from field origin to tag, in field coords)
+
         Vector3 fieldOriginWorldPosition = tagWorldPosition - (fieldOriginWorldRotation * tagPositionInFieldCoords);
 
 
@@ -407,26 +424,10 @@ public class Calibrator : MonoBehaviour
         {
             ID = selectedTag.ID,
             anchorUuid = guid,
-            pose = new PoseData
-            {
-                translation = new TranslationData
-                {
-                    x = fieldOriginWorldPosition.x,
-                    y = fieldOriginWorldPosition.y,
-                    z = fieldOriginWorldPosition.z
-                },
-                rotation = new RotationData
-                {
-                    quaternion = new QuaternionData
-                    {
-                        W = fieldOriginWorldRotation.w,
-                        X = fieldOriginWorldRotation.x,
-                        Y = fieldOriginWorldRotation.y,
-                        Z = fieldOriginWorldRotation.z
-                    }
-                }
-            }
         });
+
+        saveActiveField();
+
 
 
 

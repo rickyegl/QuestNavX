@@ -5174,6 +5174,7 @@ MonoBehaviour:
   fieldSelector: {fileID: 818066873}
   debugAprilTag: {fileID: 1080553877}
   fieldObject: {fileID: 890444839}
+  anchorsLocation: {fileID: 555953447}
 --- !u!1 &1170775087
 GameObject:
   m_ObjectHideFlags: 0
